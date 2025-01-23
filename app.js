@@ -8,7 +8,7 @@ app.use(express.json());
 // * CORS Policy
 app.use(
   cors({
-    origin: "http://localhost:3000", 
+    origin: "http://localhost:3000",
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
@@ -16,6 +16,10 @@ app.use(
 );
 //http://localhost:3000
 //https://admin-chat-front.vercel.app
+
+app.get("/", (req, res) => {
+  res.send("Hello, World!");
+});
 
 //* Routes
 app.use("/users", userRoute);
