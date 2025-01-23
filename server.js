@@ -19,7 +19,7 @@ const connectToDB = async () => {
 
 //* Start app
 const startServer = () => {
-  const port = process.env.MY_PORT | 3001; // Fixed environment variable name
+  const port = process.env.MY_PORT || 3001; // Fixed environment variable name
   app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
   });
