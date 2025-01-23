@@ -8,7 +8,7 @@ dotenv.config();
 const connectToDB = async () => {
   try {
     await mongoose.connect(
-      process.env.MONGO_URI
+      process.env.MY_MONGO_URI
     );
     console.log(`MongoDB connected: ${mongoose.connection.host}`);
   } catch (err) {
@@ -19,7 +19,7 @@ const connectToDB = async () => {
 
 //* Start app
 const startServer = () => {
-  const port = process.env.PORT | 3001; // Fixed environment variable name
+  const port = process.env.MY_PORT | 3001; // Fixed environment variable name
   app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
   });

@@ -9,7 +9,7 @@ const verifyToken = async (req, res) => {
 
   try {
     // Token validation
-    const decoded = await jwt.verify(token, process.env.SECRET);
+    const decoded = await jwt.verify(token, process.env.MY_SECRET);
     return decoded;
   } catch (error) {
     return res.status(401).json({ message: "Invalid token" });
