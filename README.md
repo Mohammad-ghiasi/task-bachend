@@ -165,11 +165,9 @@ The API supports CORS for the frontend located at `http://localhost:3000`. This 
 - Make sure MongoDB is up and running before using the API.
 - The `SECRET` key used for JWT should be kept secure and not exposed.
 
-## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contact
-For more information, please contact [your-email@example.com].
+For more information, please contact [mohammadghiasi005@gmail.com].
 
 ---
 
