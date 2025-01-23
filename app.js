@@ -1,0 +1,23 @@
+const express = require("express");
+const userRoute = require("./routes/user");
+const cors = require("cors");
+
+const app = express();
+// Middleware for parsing JSON
+app.use(express.json());
+// * CORS Policy
+app.use(
+  cors({
+    origin: "http://localhost:3000", 
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
+//http://localhost:3000
+//https://admin-chat-front.vercel.app
+
+//* Routes
+app.use("/users", userRoute);
+
+module.exports = app;
