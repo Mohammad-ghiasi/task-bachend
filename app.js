@@ -8,7 +8,7 @@ app.use(express.json());
 // * CORS Policy
 app.use(
   cors({
-    origin: "https://users-task-nu.vercel.app/",
+    origin: "https://users-task-nu.vercel.app",
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
