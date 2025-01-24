@@ -24,7 +24,7 @@ exports.signup = async (req, res, next) => {
       lastname,
     };
     UserModle.create(newUser);
-    return res.status(200).json({ newUser });
+    return res.status(201).json({ newUser });
   } catch (error) {
     next(error);
     console.log(error);
@@ -46,20 +46,20 @@ exports.login = async (req, res, next) => {
     // existing user
     const user = await UserModle.findOne({ email });
     if (!user) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(400).json({ message: "Invalid email or password" });
     }
 
     // checking users password
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(400).json({ message: "Invalid email or password" });
     }
 
     // create token
     const token = jwt.sign(
       { userId: user._id, email: user.email },
       "my_secret",
-    //   process.env.MY_SECRET,
+      //   process.env.MY_SECRET,
       { expiresIn: "2d" } // تنظیم زمان انقضای توکن
     );
 
@@ -83,13 +83,51 @@ exports.login = async (req, res, next) => {
 // send list of users
 exports.users = async (req, res, next) => {
   try {
-    // token validation
+    // Token validation
     await verifyToken(req, res);
 
-    // send users list
-    const users = await UserModle.find();
+    // Extract page and limit from query parameters (defaults to page 1 and 10 users per page)
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
 
-    return res.status(200).json({ users });
+    // Calculate skip for pagination
+    const skip = (page - 1) * limit;
+
+    // Fetch users with pagination
+    const users = await UserModle.find().skip(skip).limit(limit);
+
+    // Count total users for pagination metadata
+    const totalUsers = await UserModle.countDocuments();
+
+    // Return users with pagination metadata
+    return res.status(200).json({
+      users,
+      pagination: {
+        currentPage: page,
+        totalPages: Math.ceil(totalUsers / limit),
+        totalUsers,
+        pageSize: users.length,
+      },
+    });
+  } catch (error) {
+    next(error);
+    console.error(error);
+  }
+};
+
+// send single user
+exports.user = async (req, res, next) => {
+  try {
+    // Token validation
+    await verifyToken(req, res);
+
+    const { userId } = req.params;
+
+    // find user by id
+    const user = await UserModle.findById(userId);
+
+    // Return user
+    return res.status(200).json({ user });
   } catch (error) {
     next(error);
     console.error(error);

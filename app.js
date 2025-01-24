@@ -8,7 +8,7 @@ app.use(express.json());
 // * CORS Policy
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://users-task-nu.vercel.app/",
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
@@ -19,7 +19,7 @@ app.use(
 app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).send("Something went wrong!");
-  next()
+  next();
 });
 
 app.get("/", (req, res) => {
