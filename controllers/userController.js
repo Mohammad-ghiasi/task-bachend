@@ -23,8 +23,8 @@ exports.signup = async (req, res, next) => {
       firstname,
       lastname,
     };
-    UserModle.create(newUser);
-    return res.status(201).json({ newUser });
+    const createdNewUser = await UserModle.create(newUser);
+    return res.status(201).json({ createdNewUser });
   } catch (error) {
     next(error);
     console.log(error);
@@ -144,6 +144,18 @@ exports.updateUsers = async (req, res, next) => {
     if (!userId) {
       return res.status(400).json({ message: "User ID is required" });
     }
+    // existing user
+    const {email: existUerEmail, _id: id} = await UserModle.findById(userId);
+    if (!existUerEmail) {
+      return res.status(400).json({ message: "Culd not find user" });
+    }
+    // validate email exist
+    const validateEmai = await UserModle.find({email : req.body.email, _id : {$ne:id}});
+    if (validateEmai.length > 0) {
+      return res.status(400).json({ message: "Email alredu exist" });
+    }
+    
+    
     const updateUser = {
       password: req.body.password || null,
       job: req.body.job || null,
